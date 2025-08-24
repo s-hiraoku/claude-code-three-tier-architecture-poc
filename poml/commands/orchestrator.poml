@@ -1,0 +1,70 @@
+<poml>
+  <role>テスト用のダミーオーケストレーター - Claude Code Three Tier Architecture POC 3層アーキテクチャ検証</role>
+  
+  <task>
+    Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、2つのキャラクターコマンドのマークダウンファイルを順次読み込んで実行する：
+    <list>
+      <item>`.claude/commands/command-zundamon.md`を読み込んで、その指示に従って実行</item>
+      <item>`.claude/commands/command-lum-chan.md`を読み込んで、その指示に従って実行</item>
+      <item>両方の実行結果を統合してTerminalに表示</item>
+    </list>
+  </task>
+  
+  <p>実行手順：</p>
+  <list>
+    <item>1. `.claude/commands/command-zundamon.md`を読み込んで、その内容を直接実行する</item>
+    <item>2. `.claude/commands/command-lum-chan.md`を読み込んで、その内容を直接実行する</item>
+    <item>3. 実行結果を表示</item>
+  </list>
+  
+  <p>重要：読み込んだマークダウンファイルの内容は、Taskツールで実行してはいけません。ファイルの内容を読み取って、その指示に従って直接実行してください。</p>
+  
+  <p>期待される結果：両方のコマンドが正常に実行され、結果が表示される</p>
+  
+  <example>
+    <p>期待される出力形式:</p>
+    <p>## 🎯 Claude Code Three Tier Architecture POC 検証結果</p>
+    <p></p>
+    <p>| Layer | Component | Status | Details |</p>
+    <p>|-------|-----------|--------|---------|</p>
+    <p>| **Layer 1** | Dummy Orchestrator | ✅ | POML読み込み・統合制御完了 |</p>
+    <p>| **Layer 2** | Zundamon Command | ✅ | 2つのサブエージェント呼び出し成功 |</p>
+    <p>| **Layer 2** | lum-chan Command | ✅ | 2つのサブエージェント呼び出し成功 |</p>
+    <p>| **Layer 3** | zundamon-greeter | ✅ | 挨拶機能実行完了 |</p>
+    <p>| **Layer 3** | zundamon-storyteller | ✅ | 物語生成機能実行完了 |</p>
+    <p>| **Layer 3** | lum-greeter | ✅ | 挨拶機能実行完了 |</p>
+    <p>| **Layer 3** | lum-emotion | ✅ | 感情表現機能実行完了 |</p>
+    <p></p>
+    <p>### 🟢 Zundamon Command 実行結果</p>
+    <p></p>
+    <p>#### zundamon-greeter サブエージェント出力:</p>
+    <p>[サブエージェントの完全な出力をここに詳細表示]</p>
+    <p></p>
+    <p>#### zundamon-storyteller サブエージェント出力:</p>
+    <p>[サブエージェントの完全な出力をここに詳細表示]</p>
+    <p></p>
+    <p>### 🟡 lum-chan Command 実行結果</p>
+    <p></p>
+    <p>#### lum-greeter サブエージェント出力:</p>
+    <p>[サブエージェントの完全な出力をここに詳細表示]</p>
+    <p></p>
+    <p>#### lum-emotion サブエージェント出力:</p>
+    <p>[サブエージェントの完全な出力をここに詳細表示]</p>
+    <p></p>
+    <p>### 🔧 技術検証結果</p>
+    <p></p>
+    <p>| 機能 | 実装状況 | 動作確認 |</p>
+    <p>|------|----------|----------|</p>
+    <p>| POML解析 | ✅ | pomljs正常動作 |</p>
+    <p>| Task Tool連携 | ✅ | 4サブエージェント並列実行 |</p>
+    <p>| キャラクター制御 | ✅ | Zundamon・lum-chan両対応 |</p>
+    <p>| 動的エージェント呼び出し | ✅ | POML定義による動的実行 |</p>
+    <p></p>
+    <p>### 📊 実行統計</p>
+    <p></p>
+    <p>- **総サブエージェント数**: 4</p>
+    <p>- **成功実行数**: 4 (100%)</p>
+    <p>- **Layer間連携**: 正常</p>
+    <p>- **POML統合**: 正常</p>
+  </example>
+</poml>
