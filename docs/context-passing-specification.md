@@ -1,4 +1,4 @@
-# Claude Code 3層アーキテクチャ 汎用コンテキスト受け渡し仕様書
+# Claude Code 3 層アーキテクチャ 汎用コンテキスト受け渡し仕様書
 
 ## 概要
 
@@ -9,7 +9,7 @@ Claude Code Three Tier Architecture POC における**汎用コンテキスト�
 
 - **シングルコンテキスト**: 一つのコンテキストが全層を通して受け渡される
 - **汎用性**: 任意のワークフローに適用可能な抽象的パターン
-- **シンプル性**: POML標準機能（`<let>`, `{{ }}`）のみを使用
+- **シンプル性**: POML 標準機能（`<let>`, `{{ }}`）のみを使用
 - **層間独立性**: 各層がコンテキスト内部構造に依存しない設計
 
 ## 🏗️ アーキテクチャ設計
@@ -28,7 +28,8 @@ Claude Code Three Tier Architecture POC における**汎用コンテキスト�
 │ - コンテキスト拡張（オプション）           │
 │ - context.workflow_data 追加            │
 └─────────────┬───────────────────────────┘
-              │ context 受け渡し
+              │ Layer3がサブエージェントの場合：Claude Codeの自然なコンテキスト機能を活用
+              │ （構造化コンテキストではなく、会話履歴による情報伝達）
 ┌─────────────▼───────────────────────────┐
 │ Layer 3: Sub-Agents                    │
 │ - コンテキスト利用                       │
@@ -43,33 +44,33 @@ Claude Code Three Tier Architecture POC における**汎用コンテキスト�
 ```javascript
 context = {
   // 必須フィールド（全ワークフロー共通）
-  user_input: string,      // ユーザーからの入力内容
-  timestamp: string,       // 実行開始時刻
-  execution_id: string,    // 一意の実行識別子
-  
+  user_input: string, // ユーザーからの入力内容
+  timestamp: string, // 実行開始時刻
+  execution_id: string, // 一意の実行識別子
+
   // 動的フィールド（ワークフロー固有）
-  workflow_data: object,   // ワークフロー特有のデータ
-  accumulated_results: [],  // 累積実行結果
-  
+  workflow_data: object, // ワークフロー特有のデータ
+  accumulated_results: [], // 累積実行結果
+
   // メタ情報
-  current_layer: string,   // "layer_1" | "layer_2" | "layer_3"
-  parent_layer_result: any // 前の層からの結果
-}
+  current_layer: string, // "layer_1" | "layer_2" | "layer_3"
+  parent_layer_result: any, // 前の層からの結果
+};
 ```
 
 ### フィールド詳細
 
-| フィールド | 型 | 必須 | 説明 |
-|-----------|----|----|------|
-| `user_input` | string | ✅ | ユーザーからの入力。全層で参照可能 |
-| `timestamp` | string | ✅ | 処理開始時刻。トレーサビリティ用 |
-| `execution_id` | string | ✅ | 実行を一意に識別するID |
-| `workflow_data` | object | ❌ | ワークフロー固有の追加データ |
-| `accumulated_results` | array | ❌ | 各層での実行結果を蓄積 |
-| `current_layer` | string | ❌ | 現在実行中の層を示すメタ情報 |
-| `parent_layer_result` | any | ❌ | 直前の層からの結果 |
+| フィールド            | 型     | 必須 | 説明                               |
+| --------------------- | ------ | ---- | ---------------------------------- |
+| `user_input`          | string | ✅   | ユーザーからの入力。全層で参照可能 |
+| `timestamp`           | string | ✅   | 処理開始時刻。トレーサビリティ用   |
+| `execution_id`        | string | ✅   | 実行を一意に識別する ID            |
+| `workflow_data`       | object | ❌   | ワークフロー固有の追加データ       |
+| `accumulated_results` | array  | ❌   | 各層での実行結果を蓄積             |
+| `current_layer`       | string | ❌   | 現在実行中の層を示すメタ情報       |
+| `parent_layer_result` | any    | ❌   | 直前の層からの結果                 |
 
-## ⚙️ POML実装パターン
+## ⚙️ POML 実装パターン
 
 ### Layer 1: Orchestrator パターン
 
@@ -82,7 +83,7 @@ context = {
     execution_id: unique_id,
     current_layer: "layer_1"
   }}</let>
-  
+
   <role>オーケストレーター</role>
   <task>
     コンテキスト {{ context }} を使用して、
@@ -102,7 +103,7 @@ context = {
     current_layer: "layer_2",
     parent_layer_result: layer1_result
   }}</let>
-  
+
   <role>専門コマンド制御</role>
   <task>
     継承コンテキスト {{ context }} を使用して、
@@ -117,13 +118,13 @@ context = {
 <poml>
   <!-- コンテキスト受け取り・利用 -->
   <let name="context">{{ received_context }}</let>
-  
+
   <role>{{ context.workflow_data.agent_role }}として動作</role>
   <task>
     ユーザー要求「{{ context.user_input }}」に基づいて、
     専門的な処理を実行する
   </task>
-  
+
   <example>
     Input: {{ context.user_input }}
     Output: [処理結果をcontextに基づいて生成]
@@ -173,7 +174,7 @@ context = {
 
 ### シンプル性の原則
 
-1. **標準機能のみ**: POML標準の `<let>` と `{{ }}` のみ使用
+1. **標準機能のみ**: POML 標準の `<let>` と `{{ }}` のみ使用
 2. **最小限の構造**: 必要最小限のフィールドで構成
 3. **理解容易性**: 開発者が直感的に理解できる設計
 
@@ -188,7 +189,7 @@ context = {
 
 ### DON'T（禁止事項）
 
-- ❌ カスタムPOMLタグは使用しない
+- ❌ カスタム POML タグは使用しない
 - ❌ 必須フィールドを削除・変更しない
 - ❌ 層を跨いでコンテキスト構造に依存した実装をしない
 - ❌ コンテキスト内に機密情報を含めない
@@ -226,8 +227,8 @@ context = {
 
 ## 📚 関連ドキュメント
 
-- [Claude Code 3層アーキテクチャ実装指針](./architecture-guide.md)
-- [POML仕様書](https://docs.microsoft.com/poml)
+- [Claude Code 3 層アーキテクチャ実装指針](./architecture-guide.md)
+- [POML 仕様書](https://docs.microsoft.com/poml)
 - [実装例とサンプルコード](../examples/)
 
 ---
