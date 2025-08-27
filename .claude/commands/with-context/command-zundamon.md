@@ -24,7 +24,7 @@ User argument: $ARGUMENT
 I'll use the Bash tool to execute the POML Zundamon file with the user's argument as context:
 
 ```bash
-npx pomljs --file poml/commands/with-context/zundamon.poml --context "TOPIC=$ARGUMENT"
+npx pomljs --file poml/commands/with-context/zundamon.poml --context "TOPIC=$ARGUMENT" --context "PREVIOUS_CONTEXT="
 ```
 
 Then I'll follow the instructions from the POML output and respond as Zundamon character.
