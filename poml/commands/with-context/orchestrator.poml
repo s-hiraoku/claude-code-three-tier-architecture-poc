@@ -9,19 +9,15 @@
 <!-- モード判定: 「議論」が含まれるかチェック -->
 <let name="mode" value="topic.includes('議論') ? 'debate' : 'collaborative_response'"/>
 
-<!-- 2. Layer 2コマンド実行指示 -->
-Execute /command-zundamon with topic: {{topic}}, mode: {{mode}}
+<!-- 2. 実行タスクリスト -->
+<list>
+<item>`.claude/commands/command-zundamon.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context=""）で実行</item>
+<item>`.claude/commands/command-lum-chan.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context="[zundamon results]"）で実行</item>
+<item>両方の結果を統合して表示</item>
+</list>
 
-<!-- 3. 結果統合指示 -->
-Execute /command-lum-chan with topic: {{topic}}, mode: {{mode}}, previous_results: [zundamon results]
-
-<!-- 4. 最終結果表示 -->
-Display integrated results from both commands
-
-<!-- 6. 統合結果を表示 -->
+<!-- 5. 結果表示 -->
 ## 🎯 お題: {{topic}}
 **モード**: {{mode === 'collaborative_response' ? '協調回答形式' : '議論形式'}}
 
 ---
-
-{{all_results.join('\n\n---\n\n')}}
