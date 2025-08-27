@@ -298,6 +298,150 @@ poml/agents/with-context/
 /orchestrator "読書と映画鑑賞どちらが良いか議論して"
 ```
 
+## 🔬 論文ベース機能拡張（2次開発予定）
+
+### 追加機能一覧
+
+**注意**: 以下の機能は2次開発フェーズで実装予定。まずは基本的なwith-context実装に集中する。
+
+論文調査により特定された、将来実装予定の追加機能とPOML標準機能での実現方法：
+
+#### 1. Response Consistency Index (RCI) - 応答一貫性評価
+**論文根拠**: "Modeling Response Consistency in Multi-Agent LLM Systems" (2504.07303v1)
+**目的**: 協調回答と議論の品質を定量評価
+
+**POML実装**:
+```xml
+<!-- RCI計算 - キャラクター一貫性チェック -->
+<let name="rci_score">0</let>
+<let name="total_checks">0</let>
+
+<!-- ずんだもん応答の一貫性チェック -->
+<if condition="{{ zundamon_response.includes('なのだ') }}">
+  <let name="rci_score">{{ rci_score + 1 }}</let>
+</if>
+<let name="total_checks">{{ total_checks + 1 }}</let>
+
+<!-- ラムちゃん応答の一貫性チェック -->
+<if condition="{{ lum_response.includes('だっちゃ') }}">
+  <let name="rci_score">{{ rci_score + 1 }}</let>
+</if>
+<let name="total_checks">{{ total_checks + 1 }}</let>
+
+<!-- コンテキスト忠実性チェック -->
+<if condition="{{ response.toLowerCase().includes(topic.toLowerCase()) }}">
+  <let name="rci_score">{{ rci_score + 1 }}</let>
+</if>
+<let name="total_checks">{{ total_checks + 1 }}</let>
+
+<!-- 最終RCIスコア計算 -->
+<let name="final_rci">{{ (rci_score / total_checks * 100).toFixed(1) }}</let>
+```
+
+#### 2. コンテキスト忠実性検証 (Context Faithfulness)
+**論文根拠**: "Context-faithful Prompting for Large Language Models" (2303.11315)
+**目的**: キャラクター特性の確実な反映
+
+**POML実装**:
+```xml
+<!-- コンテキスト忠実性チェック -->
+<let name="context_warnings">[]</let>
+
+<!-- キャラクター特性チェック -->
+<if condition="{{ !zundamon_response.includes('なのだ') && character === 'zundamon' }}">
+  <let name="context_warnings">[...context_warnings, "ずんだもん口調が不足"]</let>
+</if>
+
+<!-- トピック関連性チェック -->
+<if condition="{{ !response.toLowerCase().includes(topic.toLowerCase()) }}">
+  <let name="context_warnings">[...context_warnings, "トピックとの関連性が低い"]</let>
+</if>
+
+<!-- ロール整合性チェック -->
+<if condition="{{ role === 'opinion_maker' && !response.includes('思う') }}">
+  <let name="context_warnings">[...context_warnings, "意見表明ロールが不十分"]</let>
+</if>
+```
+
+#### 3. 動的プロンプト最適化 (Dynamic Prompt Selection)
+**論文根拠**: "Selective Prompting Tuning for Personalized Conversations" (2406.18187v1)
+**目的**: コンテキスト駆動型ロール切り替えの精度向上
+
+**POML実装**:
+```xml
+<!-- モードとロールに基づく動的プロンプト選択 -->
+<let name="selected_prompt">""</let>
+
+<if condition="{{ mode === 'collaborative_response' && role === 'greeter' }}">
+  <let name="selected_prompt">親しみやすく挨拶をして、{{ topic }}について前向きなコメントをしてください。</let>
+</if>
+
+<if condition="{{ mode === 'debate' && role === 'opinion_maker' }}">
+  <let name="selected_prompt">{{ topic }}について明確な立場を取り、論理的な根拠とともに意見を述べてください。</let>
+</if>
+
+<if condition="{{ mode === 'debate' && role === 'counter_arguer' }}">
+  <let name="selected_prompt">前の意見「{{ previous_statement }}」に対して、異なる視点から建設的な反論を行ってください。</let>
+</if>
+```
+
+#### 4. バッチ処理最適化 (Batch Processing Optimization)
+**論文根拠**: "Collaborative Stance Detection via Small-Large Language Model Consistency Verification" (2502.19954v2)
+**目的**: 実用性向上とレスポンス時間短縮
+
+**POML実装**:
+```xml
+<!-- 効率的な順次実行とコンテキスト蓄積 -->
+<let name="batch_context">{
+  "topic": "{{ topic }}",
+  "mode": "{{ mode }}",
+  "accumulated_responses": [],
+  "execution_order": ["zundamon_1", "lum_1", "zundamon_2", "lum_2"]
+}</let>
+
+<!-- バッチ実行ループ -->
+<for each="agent_turn" in="{{ batch_context.execution_order }}">
+  <let name="current_context">{{ {...batch_context, current_turn: agent_turn} }}</let>
+  <!-- エージェント実行とコンテキスト更新 -->
+  <let name="batch_context.accumulated_responses">[...batch_context.accumulated_responses, agent_response]</let>
+</for>
+```
+
+#### 5. 論理一貫性検証 (Logical Consistency Verification)
+**論文根拠**: CoVerフレームワーク (2502.19954v2)
+**目的**: 応答の論理的整合性確保
+
+**POML実装**:
+```xml
+<!-- 論理一貫性チェック -->
+<let name="consistency_checks">[]</let>
+
+<!-- 前後の発言の矛盾チェック -->
+<if condition="{{ previous_position === 'positive' && current_position === 'negative' && !explanation_given }}">
+  <let name="consistency_checks">[...consistency_checks, "立場変更の説明が不足"]</let>
+</if>
+
+<!-- 議論モードでの論理構造チェック -->
+<if condition="{{ mode === 'debate' && !response.includes('なぜなら') && !response.includes('理由は') }}">
+  <let name="consistency_checks">[...consistency_checks, "論理的根拠が不明確"]</let>
+</if>
+```
+
+### 実装統合方針
+
+1. **RCI評価**: 各応答生成後に自動実行し、品質スコアを表示
+2. **コンテキスト忠実性**: エージェント呼び出し前にプロンプト検証
+3. **動的プロンプト**: Layer 2でのエージェント呼び出し時に最適プロンプト選択
+4. **バッチ処理**: orchestrator.pomlでの効率的な実行順序管理
+5. **一貫性検証**: 各応答後にリアルタイムで整合性確認
+
+### 期待効果
+
+- **定量評価**: RCIによる協調品質の客観的測定
+- **品質向上**: コンテキスト忠実性による確実なキャラクター表現
+- **効率性**: バッチ処理による実行時間短縮
+- **信頼性**: 論理一貫性検証による応答品質保証
+
 ---
 
-この設計により、POMLによるコンテキスト変数管理を活用した議論形式の協調的サブエージェント動作の実現を目指します。キャラクター間の論理的な議論展開を通じて、より高度なコンテキスト共有機能を検証します。
+この設計により、最新の論文研究に基づく科学的根拠を持った協調的サブエージェント動作の実現を目指します。POML標準機能のみで実装可能な拡張機能により、実用性と信頼性を両立した検証システムを構築します。
