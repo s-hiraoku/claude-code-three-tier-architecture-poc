@@ -1,0 +1,22 @@
+<!-- with-context オーケストレーター POML -->
+<!-- Layer 1: お題設定・Layer 2への委譲 -->
+
+<!-- 1. $ARGUMENTSからお題を取得してtopic変数に設定 -->
+<let name="topic">${ARGUMENTS}</let>
+<let name="all_results">[]</let>
+
+<!-- 2. command-zundamon.mdを読み込み、topicを渡して実行 -->
+<read file=".claude/commands/with-context/command-zundamon.md" />
+
+<!-- 3. zundamonの結果をall_resultsに追加 -->
+<let name="all_results">[...all_results, zundamon_results]</let>
+
+<!-- 4. command-lum-chan.mdを読み込み、topic + all_resultsを渡して実行 -->
+<read file=".claude/commands/with-context/command-lum-chan.md" />
+
+<!-- 5. 統合結果を表示 -->
+**お題**: {{ topic }}
+
+---
+
+{{ all_results.join('\n\n---\n\n') }}
