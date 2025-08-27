@@ -1,32 +1,31 @@
 <!-- Layer 2: ずんだもん汎用エージェント制御 POML -->
 <!-- サブエージェント選択・協調管理 -->
 
-<!-- 1. Layer 1から継承したコンテキスト情報 -->
-<let name="topic">{{ inherited_topic }}</let>
-<let name="mode">{{ inherited_mode }}</let>
-<let name="previous_context">{{ inherited_previous_context }}</let>
-<let name="my_results">[]</let>
+<!-- 1. コンテキストから情報を取得 -->
+<let name="topic" value="{{TOPIC}}"/>
+<let name="mode" value="{{MODE}}"/>
+<let name="previous_context" value="{{PREVIOUS_CONTEXT}}"/>
+<let name="my_results" value="[]"/>
 
 <!-- 2. モードに応じて適切なロールでzundamonエージェントを呼び出し -->
-<if condition="{{ mode === 'collaborative_response' }}">
-  <!-- 協調回答モード: greeter ロール -->
-  <task agent="zundamon-greeter" context="{{ {topic, mode, role: 'greeter', previous_context} }}"/>
-  <let name="my_results">[...my_results, zundamon_greeter_result]</let>
-  
-  <!-- 第2ラウンド: storyteller ロール -->
-  <task agent="zundamon-storyteller" context="{{ {topic, mode, role: 'storyteller', previous_context: my_results} }}"/>
-  <let name="my_results">[...my_results, zundamon_storyteller_result]</let>
-</if>
+<task if="mode === 'collaborative_response'" agent="zundamon" context="{{JSON.stringify({topic, mode, role: 'greeter', previous_context})}}"/>
+<let if="mode === 'collaborative_response'" name="my_results" value="[...my_results, zundamon_result]"/>
 
-<if condition="{{ mode === 'debate' }}">
-  <!-- 議論モード: opinion_maker ロール -->
-  <task agent="zundamon-opinion" context="{{ {topic, mode, role: 'opinion_maker', previous_context} }}"/>
-  <let name="my_results">[...my_results, zundamon_opinion_result]</let>
-  
-  <!-- 第2ラウンド: rebuttal_maker ロール -->
-  <task agent="zundamon-rebuttal" context="{{ {topic, mode, role: 'rebuttal_maker', previous_context: my_results} }}"/>
-  <let name="my_results">[...my_results, zundamon_rebuttal_result]</let>
-</if>
+<task if="mode === 'collaborative_response'" agent="zundamon" context="{{JSON.stringify({topic, mode, role: 'storyteller', previous_context: my_results})}}"/>
+<let if="mode === 'collaborative_response'" name="my_results" value="[...my_results, zundamon_result]"/>
+
+<task if="mode === 'debate'" agent="zundamon" context="{{JSON.stringify({topic, mode, role: 'opinion_maker', previous_context})}}"/>
+<let if="mode === 'debate'" name="my_results" value="[...my_results, zundamon_result]"/>
+
+<task if="mode === 'debate'" agent="zundamon" context="{{JSON.stringify({topic, mode, role: 'rebuttal_maker', previous_context: my_results})}}"/>
+<let if="mode === 'debate'" name="my_results" value="[...my_results, zundamon_result]"/>
 
 <!-- 3. 結果をLayer 1に返却 -->
 <let name="zundamon_results">{{ my_results }}</let>
+
+<!-- 結果出力 -->
+## ずんだもんの結果
+**お題:** {{topic}}
+**モード:** {{mode}}
+
+{{my_results.join('\n\n---\n\n')}}
