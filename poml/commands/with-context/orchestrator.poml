@@ -9,7 +9,7 @@
 <!-- モード判定: 「議論」が含まれるかチェック -->
 <let name="mode" value="topic.includes('議論') ? 'debate' : 'collaborative_response'"/>
 
-<!-- 2. 実行タスクリスト -->
+<!-- 2. 実行タスクリスト (現状ではカスタムスラッシュコマンドから、カスタムスラッシュコマンドを呼び出せないため、此のようにしている)-->
 <list>
 <item>`.claude/commands/command-zundamon.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context=""）で実行</item>
 <item>`.claude/commands/command-lum-chan.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context="[zundamon results]"）で実行</item>
