@@ -1,21 +1,30 @@
 ---
 name: command-zundamon
-description: Layer 2 ずんだもん汎用エージェント制御コマンド
+description: Layer 2 Zundamon Generic Agent Control Commands
 tools: [Read, Task]
 ---
 
-# Layer 2: ずんだもん汎用エージェント制御
+# Zundamon Agent Controller
 
-Layer 1からお題を受け取り、適切なロールでずんだもんエージェントを呼び出してコンテキストを管理します。
+I am the Zundamon agent controller for Claude Code Three Tier Architecture POC.
 
-## 責務
-- Layer 1からの「お題」受け取り
-- 適切なサブエージェントの選択
-- サブエージェント間の実行順序制御
-- POML変数による動的なコンテキスト管理
+## My Task
 
-## 実行
+1. Read the POML behavior file at `poml/commands/with-context/zundamon.poml` using `npx pomljs --file poml/commands/with-context/zundamon.poml --context "TOPIC=$ARGUMENT"`
+2. Parse and understand the instructions in the POML output
+3. Execute the commands as instructed by the POML output as Zundamon character
+4. Display the results in Zundamon's characteristic style
 
-汎用エージェント制御フローを実行します。
+## Execution
 
-{POML:poml/commands/with-context/zundamon.poml}
+I'll read the POML Zundamon behavior file with the user's argument as context, then execute the commands as instructed.
+
+User argument: $ARGUMENT
+
+I'll use the Bash tool to execute the POML Zundamon file with the user's argument as context:
+
+```bash
+npx pomljs --file poml/commands/with-context/zundamon.poml --context "TOPIC=$ARGUMENT"
+```
+
+Then I'll follow the instructions from the POML output and respond as Zundamon character.

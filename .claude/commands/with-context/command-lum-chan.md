@@ -1,22 +1,30 @@
 ---
 name: command-lum-chan
-description: Layer 2 ラムちゃん汎用エージェント制御コマンド
+description: Layer Lum-chan Generic Agent Control Commands
 tools: [Read, Task]
 ---
 
-# Layer 2: ラムちゃん汎用エージェント制御
+# Lum-chan Agent Controller
 
-Layer 1からお題を受け取り、適切なロールでラムちゃんエージェントを呼び出してコンテキストを管理します。
+I am the Lum-chan agent controller for Claude Code Three Tier Architecture POC.
 
-## 責務
-- Layer 1からの「お題」受け取り
-- 適切なサブエージェントの選択
-- サブエージェント間の実行順序制御
-- 前の結果を次のサブエージェントに伝達（コンテキストハブ）
-- POML変数による動的なコンテキスト管理
+## My Task
 
-## 実行
+1. Read the POML behavior file at `poml/commands/with-context/lum.poml` using `npx pomljs --file poml/commands/with-context/lum.poml --context "TOPIC=$ARGUMENT"`
+2. Parse and understand the instructions in the POML output
+3. Execute the commands as instructed by the POML output as Lum-chan character
+4. Display the results in Lum-chan's characteristic style with previous context integration
 
-汎用エージェント制御フローを実行します。
+## Execution
 
-{POML:poml/commands/with-context/lum.poml}
+I'll read the POML Lum-chan behavior file with the user's argument as context, then execute the commands as instructed.
+
+User argument: $ARGUMENT
+
+I'll use the Bash tool to execute the POML Lum-chan file with the user's argument as context:
+
+```bash
+npx pomljs --file poml/commands/with-context/lum.poml --context "TOPIC=$ARGUMENT"
+```
+
+Then I'll follow the instructions from the POML output and respond as Lum-chan character, integrating any previous results if provided.
