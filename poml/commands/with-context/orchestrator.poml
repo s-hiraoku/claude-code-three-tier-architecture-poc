@@ -1,22 +1,27 @@
 <!-- with-context オーケストレーター POML -->
 <!-- Layer 1: お題設定・Layer 2への委譲 -->
 
-<!-- 1. $ARGUMENTSからお題を取得してtopic変数に設定 -->
-<let name="topic">${ARGUMENTS}</let>
-<let name="all_results">[]</let>
+<!-- 1. コンテキストからお題を取得してtopic変数に設定 -->
+<let name="topic" value="{{TOPIC}}"/>
+<let name="mode" value="'collaborative_response'"/>
+<let name="all_results" value="[]"/>
 
-<!-- 2. command-zundamon.mdを読み込み、topicを渡して実行 -->
-<read file=".claude/commands/with-context/command-zundamon.md" />
+<!-- モード判定: 「議論」が含まれるかチェック -->
+<let name="mode" value="topic.includes('議論') ? 'debate' : 'collaborative_response'"/>
 
-<!-- 3. zundamonの結果をall_resultsに追加 -->
-<let name="all_results">[...all_results, zundamon_results]</let>
+<!-- 2. Layer 2コマンド実行指示 -->
+Execute /command-zundamon with topic: {{topic}}, mode: {{mode}}
 
-<!-- 4. command-lum-chan.mdを読み込み、topic + all_resultsを渡して実行 -->
-<read file=".claude/commands/with-context/command-lum-chan.md" />
+<!-- 3. 結果統合指示 -->
+Execute /command-lum-chan with topic: {{topic}}, mode: {{mode}}, previous_results: [zundamon results]
 
-<!-- 5. 統合結果を表示 -->
-**お題**: {{ topic }}
+<!-- 4. 最終結果表示 -->
+Display integrated results from both commands
+
+<!-- 6. 統合結果を表示 -->
+## 🎯 お題: {{topic}}
+**モード**: {{mode === 'collaborative_response' ? '協調回答形式' : '議論形式'}}
 
 ---
 
-{{ all_results.join('\n\n---\n\n') }}
+{{all_results.join('\n\n---\n\n')}}
