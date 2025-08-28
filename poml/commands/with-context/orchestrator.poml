@@ -7,13 +7,14 @@
 <let name="all_results" value="[]"/>
 
 <!-- モード判定: 「議論」が含まれるかチェック -->
+<!-- (最終的にこれはなくす。エージェント側でどう振る舞いたいかを決めさせる) -->
 <let name="mode" value="topic.includes('議論') ? 'debate' : 'collaborative_response'"/>
 
-<!-- 2. 実行タスクリスト (現状ではカスタムスラッシュコマンドから、カスタムスラッシュコマンドを呼び出せないため、此のようにしている)-->
+<!-- 2. Layer 2カスタムスラッシュコマンドを順次実行 -->
 <list>
-<item>`.claude/commands/with-context/command-zundamon.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context=""）で実行</item>
-<item>`.claude/commands/with-context/command-lum-chan.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context="[zundamon results]"）で実行</item>
-<item>両方の結果を統合して表示</item>
+  <item>`.claude/commands/with-context/command-zundamon.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context=""）で実行</item>
+  <item>`.claude/commands/with-context/command-lum-chan.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context=""）で実行（Layer2内でzundamonの結果を取得して利用）</item>
+  <item>両方の結果を統合して表示</item>
 </list>
 
 <!-- 5. 結果表示 -->
