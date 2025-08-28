@@ -1,24 +1,17 @@
 <!-- with-context オーケストレーター POML -->
 <!-- Layer 1: お題設定・Layer 2への委譲 -->
 
-<!-- 1. コンテキストからお題を取得してtopic変数に設定 -->
-<let name="topic" value="{{TOPIC}}"/>
-<let name="mode" value="'collaborative_response'"/>
-<let name="all_results" value="[]"/>
-
-<!-- モード判定: 「議論」が含まれるかチェック -->
-<!-- (最終的にこれはなくす。エージェント側でどう振る舞いたいかを決めさせる) -->
-<let name="mode" value="topic.includes('議論') ? 'debate' : 'collaborative_response'"/>
+<!-- 1. コンテキストを取得してcontext変数に設定 -->
+<let name="context" value="{{CONTEXT}}"/>
 
 <!-- 2. Layer 2カスタムスラッシュコマンドを順次実行 -->
 <list>
-  <item>`.claude/commands/with-context/command-zundamon.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context=""）で実行</item>
-  <item>`.claude/commands/with-context/command-lum-chan.md`を読み込んで、コンテキスト（topic={{topic}}, mode={{mode}}, previous_context=""）で実行（Layer2内でzundamonの結果を取得して利用）</item>
+  <item>`.claude/commands/with-context/command-zundamon.md`を読み込んで、コンテキスト（context={{context}}）で実行</item>
+  <item>`.claude/commands/with-context/command-lum-chan.md`を読み込んで、コンテキスト（context={{context}}）で実行（Layer2内でzundamonの結果を取得して利用）</item>
   <item>両方の結果を統合して表示</item>
 </list>
 
-<!-- 5. 結果表示 -->
-## 🎯 お題: {{topic}}
-**モード**: {{mode === 'collaborative_response' ? '協調回答形式' : '議論形式'}}
+<!-- 3. 結果表示 -->
+## 🎯 お題: {{context}}
 
 ---
