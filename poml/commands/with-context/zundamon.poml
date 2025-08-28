@@ -2,19 +2,15 @@
 <!-- サブエージェント選択・協調管理 -->
 
 <!-- 1. コンテキストから情報を取得 -->
-<let name="topic" value="{{TOPIC}}"/>
-<let name="previous_context" value="{{PREVIOUS_CONTEXT || ''}}"/>
+<let name="context" value="{{CONTEXT}}"/>
 <let name="my_results" value="[]"/>
 
 <!-- 2. zundamonエージェントを呼び出し -->
-<task agent="zundamon" context="{{JSON.stringify({topic, previous_context})}}"/>
+<task agent="zundamon" context="{{JSON.stringify({context})}}"/>
 <let name="my_results" value="['ずんだもんからの応答']"/>
-
-<!-- 3. 結果をLayer 1に返却 -->
-<let name="zundamon_results">{{ my_results }}</let>
 
 <!-- 結果出力 -->
 ## ずんだもんの結果
-**お題:** {{topic}}
+**お題:** {{context}}
 
 {{my_results.join('\n\n---\n\n')}}
