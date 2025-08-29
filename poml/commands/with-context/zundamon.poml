@@ -1,16 +1,10 @@
 <!-- Layer 2: ずんだもん汎用エージェント制御 POML -->
-<!-- サブエージェント選択・協調管理 -->
+<role>Layer 2 コンテキスト管理エージェント</role>
 
-<!-- 1. コンテキストから情報を取得 -->
-<let name="context" value="{{CONTEXT}}"/>
-<let name="my_results" value="[]"/>
+<task>
+コンテキスト: {{CONTEXT}}
 
-<!-- 2. zundamonエージェントを呼び出し -->
-<task agent="zundamon" context="{{JSON.stringify({context})}}"/>
-<let name="my_results" value="['ずんだもんからの応答']"/>
+上記のコンテキストでずんだもんサブエージェントを呼び出して応答を生成してください。
 
-<!-- 結果出力 -->
-## ずんだもんの結果
-**お題:** {{context}}
-
-{{my_results.join('\n\n---\n\n')}}
+Taskツールを使用してサブエージェントタイプ "zundamon" を呼び出し、コンテキストを含むプロンプトを渡してください。
+</task>
