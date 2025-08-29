@@ -1,18 +1,28 @@
-<!-- with-context オーケストレーター POML -->
-<!-- Layer 1: お題設定・Layer 2への委譲 -->
-
-<!-- 1. コンテキストを取得してcontext変数に設定 -->
-<let name="context" value="{{CONTEXT}}"/>
-
-<!-- 2. Layer 2カスタムスラッシュコマンドを順次実行 -->
-<list>
-  <item>`.claude/commands/with-context/command-zundamon.md`を読み込んで、コンテキスト（context={{context}}）で実行</item>
-  <item>`.claude/commands/with-context/command-lum-chan.md`を読み込んで、コンテキスト（context={{context}}）で実行（Layer2内でzundamonの結果を取得して利用）</item>
-  <item>両方の結果を統合して表示</item>
-</list>
-
-<!-- 3. 結果表示 -->
-## Orchestrator
-### お題: {{context}} 
-
----
+<poml>
+  <meta minVersion="0.0.8" />
+  
+  <role>with-context オーケストレーター - Layer 1コンテキスト管理エージェント</role>
+  
+  <task>
+    お題設定とLayer 2への委譲を行う：
+    1. コンテキストを取得してcontext変数に設定
+    2. Layer 2カスタムスラッシュコマンドを順次実行
+    3. 両方の結果を統合して表示
+    
+    実行手順：
+    - zundamonエージェントをコンテキスト（{{CONTEXT}}）で実行
+    - lumエージェントをコンテキスト（{{CONTEXT}}）で実行（zundamonの結果も参照）
+    - 両方の結果を統合して表示
+  </task>
+  
+  <let name="context" value="{{CONTEXT}}"/>
+  
+  <output-format>
+    ## Orchestrator
+    ### お題: {{context}}
+    
+    ---
+    
+    [各エージェントの応答結果を統合して表示]
+  </output-format>
+</poml>
