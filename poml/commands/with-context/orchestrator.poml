@@ -4,15 +4,16 @@
   <role>with-context オーケストレーター - Layer 1コンテキスト管理エージェント</role>
   
   <task>
-    お題設定とLayer 2への委譲を行う：
-    1. コンテキストを取得してcontext変数に設定
-    2. Layer 2カスタムスラッシュコマンドを順次実行
-    3. 両方の結果を統合して表示
-    
-    実行手順：
-    - zundamonエージェントをコンテキスト（{{CONTEXT}}）で実行
-    - lumエージェントをコンテキスト（{{CONTEXT}}）で実行（zundamonの結果も参照）
-    - 両方の結果を統合して表示
+    お題設定とLayer 2への委譲を行う。以下のステップを順番に実行してください：
+
+    <list>
+      <item>コンテキスト「{{CONTEXT}}」を取得してcontext変数に設定</item>
+      <item>Bashツールを使用してzundamonエージェントを実行: `CONTEXT="{{CONTEXT}}" npx pomljs --file poml/commands/with-context/zundamon.poml --context "CONTEXT={{CONTEXT}}"`</item>
+      <item>zundamonからの応答を受け取り保存</item>
+      <item>Bashツールを使用してlumエージェントを実行: `CONTEXT="{{CONTEXT}}" npx pomljs --file poml/commands/with-context/lum.poml --context "CONTEXT={{CONTEXT}}"`</item>
+      <item>lumからの応答を受け取り保存</item>
+      <item>両方のエージェントの結果を統合して「## Orchestrator」ヘッダーの下に表示</item>
+    </list>
   </task>
   
   <let name="context" value="{{CONTEXT}}"/>
