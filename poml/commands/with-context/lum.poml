@@ -7,7 +7,7 @@
 
 <!-- 2. lumエージェントを呼び出し -->
 <task agent="lum" context="{{JSON.stringify({context})}}"/>
-<let name="my_results" value="['らむちゃんからの応答']"/>
+<let name="my_results" value="['ラムちゃんからの応答']"/>
 
 <!-- 結果出力 -->
 ## ラムちゃんの結果
