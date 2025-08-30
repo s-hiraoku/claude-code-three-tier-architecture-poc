@@ -1,41 +1,44 @@
 <poml>
   <meta minVersion="0.0.8" />
   
+  <!-- コンテキストファイル読み込み -->
+  <let name="context_file" src="../../../context/context.poml"/>
+  
   <role>with-context オーケストレーター - Layer 1コンテキスト管理エージェント</role>
   
   <task>
-    以下のステップを順番に実行してください：
+    コンテキスト初期化タスク：
     <list>
-      <item>コンテキスト「{{CONTEXT}}」を取得してcontext変数に設定</item>
-      <item>`.claude/commands/with-context/command-zundamon.md`を読み込んで、その指示に従って実行</item>
-      <item>zundamonからの応答を受け取る</item>
-      <item>受け取った応答を即座に画面に表示する</item>
-      <item>応答をzundamon_response変数に保存</item>
+      <item>カスタムスラッシュコマンドの引数「{{CONTEXT}}」をユーザーインプットとして取得</item>
+      <item>context.pomlファイルにユーザーインプット「{{CONTEXT}}」を設定</item>
     </list>
-    
-    重要：この時点で結果を表示し、次のタスクに進む前に出力を完了すること
   </task>
-  
+
   <task>
-    以下のステップを順番に実行してください：
+    エージェント実行タスク：
     <list>
-      <item>コンテキスト「{{CONTEXT}}」を取得してcontext変数に設定</item>
-      <item>`.claude/commands/with-context/command-lum-chan.md`を読み込んで、その指示に従って実行</item>
-      <item>lumからの応答を受け取る</item>
-      <item>受け取った応答を即座に画面に表示する</item>
-      <item>応答をlum_response変数に保存</item>
+      <item for="agent in ['zundamon', 'lum']">
+        エージェント {{agent}} の実行：
+        <list>
+          <item>context.pomlファイルから構造化コンテキストを読み込み</item>
+          <item>`.claude/commands/with-context/command-{{agent}}.md`を読み込んで、その指示に従って実行</item>
+          <item>{{agent}}からの応答を受け取る</item>
+          <item>受け取った応答({{agent}}_response)を即座に画面に表示する</item>
+          <item>応答({{agent}}_response)をcontext.pomlファイルに保存する</item>
+        </list>
+        
+        重要：この時点で結果を表示し、次のエージェントまたは統合分析に進む前に出力を完了すること
+        注意：コンテキスト仕様に従い、会話履歴による情報伝達を使用する
+      </item>
     </list>
-    
-    重要：この時点で結果を表示し、統合分析の前に出力を完了すること
   </task>
   
   <task>
     統合分析タスク：
     <list>
-      <item>保存されたzundamon_responseとlum_responseを統合分析</item>
+      <item>保存されたcontext.pomlを統合分析</item>
       <item>統合結果を「## Orchestrator 統合分析」として表示</item>
     </list>
   </task>
-  <let name="context" value="{{CONTEXT}}"/>
   
 </poml>
