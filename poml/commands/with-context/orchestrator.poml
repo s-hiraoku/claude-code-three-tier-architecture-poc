@@ -4,26 +4,38 @@
   <role>with-context オーケストレーター - Layer 1コンテキスト管理エージェント</role>
   
   <task>
-    お題設定とLayer 2への委譲を行う。以下のステップを順番に実行してください：
-
+    以下のステップを順番に実行してください：
     <list>
       <item>コンテキスト「{{CONTEXT}}」を取得してcontext変数に設定</item>
-      <item>Bashツールを使用してzundamonエージェントを実行: `CONTEXT="{{CONTEXT}}" npx pomljs --file poml/commands/with-context/zundamon.poml --context "CONTEXT={{CONTEXT}}"`</item>
-      <item>zundamonからの応答を受け取り保存</item>
-      <item>Bashツールを使用してlumエージェントを実行: `CONTEXT="{{CONTEXT}}" npx pomljs --file poml/commands/with-context/lum.poml --context "CONTEXT={{CONTEXT}}"`</item>
-      <item>lumからの応答を受け取り保存</item>
-      <item>両方のエージェントの結果を統合して「## Orchestrator」ヘッダーの下に表示</item>
+      <item>`.claude/commands/with-context/command-zundamon.md`を読み込んで、その指示に従って実行</item>
+      <item>zundamonからの応答を受け取る</item>
+      <item>受け取った応答を即座に画面に表示する</item>
+      <item>応答をzundamon_response変数に保存</item>
     </list>
+    
+    重要：この時点で結果を表示し、次のタスクに進む前に出力を完了すること
   </task>
   
+  <task>
+    以下のステップを順番に実行してください：
+    <list>
+      <item>コンテキスト「{{CONTEXT}}」を取得してcontext変数に設定</item>
+      <item>`.claude/commands/with-context/command-lum-chan.md`を読み込んで、その指示に従って実行</item>
+      <item>lumからの応答を受け取る</item>
+      <item>受け取った応答を即座に画面に表示する</item>
+      <item>応答をlum_response変数に保存</item>
+    </list>
+    
+    重要：この時点で結果を表示し、統合分析の前に出力を完了すること
+  </task>
+  
+  <task>
+    統合分析タスク：
+    <list>
+      <item>保存されたzundamon_responseとlum_responseを統合分析</item>
+      <item>統合結果を「## Orchestrator 統合分析」として表示</item>
+    </list>
+  </task>
   <let name="context" value="{{CONTEXT}}"/>
   
-  <output-format>
-    ## Orchestrator
-    ### お題: {{context}}
-    
-    ---
-    
-    [各エージェントの応答結果を統合して表示]
-  </output-format>
 </poml>
