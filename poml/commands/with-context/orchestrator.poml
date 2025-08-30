@@ -21,12 +21,12 @@
         エージェント {{agent}} の実行：
         <list>
           <item>context.pomlファイルから構造化コンテキストを読み込み</item>
-          <item>`.claude/commands/with-context/command-{{agent}}.md`を読み込んで、その指示に従って実行</item>
+          <item>`.claude/commands/with-context/command-agent.md`を読み込み、agent={{agent}}、context_file=context/context.pomlとして実行</item>
           <item>{{agent}}からの応答を受け取る</item>
           <item>受け取った応答({{agent}}_response)を即座に画面に表示する</item>
-          <item>応答({{agent}}_response)をcontext.pomlファイルに保存する</item>
+          <item>応答({{agent}}_response)をcontext.pomlファイルのaccumulated_resultsに保存する</item>
         </list>
-        
+
         重要：この時点で結果を表示し、次のエージェントまたは統合分析に進む前に出力を完了すること
         注意：コンテキスト仕様に従い、会話履歴による情報伝達を使用する
       </item>
