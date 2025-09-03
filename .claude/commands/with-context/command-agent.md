@@ -1,6 +1,10 @@
-# Generic Agent Command - Layer 2
+---
+description: Layer 2 generic agent command that loads and executes POML files based on agent name
+argument-hint: [agent-name]
+allowed-tools: [Read, Bash]
+---
 
-## Purpose
+# Generic Agent Command - Layer 2
 
 Generic agent command for custom slash commands.
 Loads and executes corresponding POML files based on the agent name specified in arguments.
@@ -8,7 +12,7 @@ Loads and executes corresponding POML files based on the agent name specified in
 ## Usage
 
 ```
-/with-context:agent $ARGUMENTS
+/with-context:command-agent [agent-name]
 ```
 
 - `$ARGUMENTS`: Agent name to execute
