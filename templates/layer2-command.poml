@@ -1,0 +1,51 @@
+<poml>
+  <meta minVersion="0.0.8" />
+  
+  <role>Layer 2 {COMMAND_NAME} Command</role>
+
+  <task>
+    User Instruction: {{user_input}}
+    Context: {{context}}
+
+    Execute the following steps in order:
+
+    <list>
+      <item>Use Read tool to load {CONTEXT_FILE_PATH} file and understand the entire context</item>
+      <item>Analyze the loaded context information, particularly considering {PREVIOUS_AGENT_REFERENCE} responses if present</item>
+      
+      <!-- Execute multiple sub-agents if configured -->
+      <item for="subagent in {SUB_AGENT_LIST}">
+        Call sub-agent {{subagent.type}}:
+        <list>
+          <item>Create detailed prompt for sub-agent "{{subagent.type}}" including entire context information:
+            
+            Base Instruction: "{{user_input}}"
+            
+            {SUB_AGENT_SPECIFIC_INSTRUCTIONS}
+            
+            Important Instruction: {CONTEXT_CONSIDERATION_INSTRUCTION}</item>
+          <item>Call sub-agent using Task tool with type "{{subagent.type}}"</item>
+          <item>Receive response from sub-agent {{subagent.type}}</item>
+          <item>Display received response as "## {{subagent.display_name}} Response"</item>
+          <item>Store response as {{subagent.type}}_response for potential aggregation</item>
+        </list>
+      </item>
+      
+      <!-- Optional: Aggregate responses if multiple sub-agents -->
+      {RESPONSE_AGGREGATION_TASK}
+      
+      <item>Return final response content for output (no additional formatting or explanation needed)</item>
+      <item>Display response content to standard output for return to Layer 1</item>
+    </list>
+  </task>
+
+  <output-format>
+    Return actual response content from sub-agent(s) as-is.
+    Do not add explanations or JSON wrapping.
+    Display response content directly to standard output for Layer 1 to receive.
+  </output-format>
+  
+  <!-- Optional: Additional configuration -->
+  {ADDITIONAL_CONFIG}
+  
+</poml>
