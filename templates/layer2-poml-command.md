@@ -23,7 +23,9 @@ Execute the following processes sequentially:
 
 1. **Get Arguments**: Extract agent name from `$ARGUMENTS`
 2. **Load Context**: Read the context file at `context/context.poml`
-3. **Execute POML**: Read the POML behavior file at `poml/commands/{DIRECTORY_NAME}/$ARGUMENTS.poml` using `user_input="$(grep 'user_input' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" context="$(grep 'user_input' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" npx pomljs --file poml/commands/with-context/$ARGUMENTS.poml`
+3. **Execute POML**: Read the POML behavior file at `poml/commands/{DIRECTORY_NAME}/$ARGUMENTS.poml` using:
+   - Extract user_input from context.poml
+   - Pass it as context variables: `npx pomljs --file poml/commands/with-context/$ARGUMENTS.poml --context "user_input=<value>" --context "context=<value>"`
 4. **Follow Instructions**: Parse and understand the instructions in the POML output
 5. **Output Results**: Display the execution results
 
