@@ -23,7 +23,7 @@ Execute the following processes sequentially:
 
 1. **Get Arguments**: Extract agent name from `$ARGUMENTS`
 2. **Load Context**: Read the context file at `context/context.poml`
-3. **Execute POML**: Read the POML behavior file at `poml/commands/{DIRECTORY_NAME}/$ARGUMENTS.poml` using `npx pomljs --file poml/commands/{DIRECTORY_NAME}/$ARGUMENTS.poml --context "user_input=$(grep 'user_input' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" --context "accumulated_results=$(grep 'accumulated_results' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" --context "context=$(accumulated_results=$(grep 'accumulated_results' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/'); if [ \"\$accumulated_results\" = \"[]\" ]; then grep 'user_input' context/context.poml | sed 's/.*value=\"\\([^\"]*\\)\".*/\\1/'; else echo \"\$accumulated_results\"; fi)"`
+3. **Execute POML**: Read the POML behavior file at `poml/commands/{DIRECTORY_NAME}/$ARGUMENTS.poml` using `user_input="$(grep 'user_input' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" context="$(grep 'user_input' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" npx pomljs --file poml/commands/with-context/$ARGUMENTS.poml`
 4. **Follow Instructions**: Parse and understand the instructions in the POML output
 5. **Output Results**: Display the execution results
 
