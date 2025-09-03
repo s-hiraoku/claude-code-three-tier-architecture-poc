@@ -17,7 +17,7 @@
   <task>
     エージェント実行タスク：
     <list>
-      <item for="agent in ['zundamon', 'lum']">
+      <item for="agent in ['zundamon', 'lum', 'character', 'assistant']">
         エージェント {{agent}} の実行：
         <list>
           <item>context.pomlファイルから構造化コンテキストを読み込み</item>
