@@ -1,8 +1,6 @@
 <poml>
   <meta minVersion="0.0.8" />
-  
-  <include src="../../../context/context.poml" />
-  
+    
   <role>
     汎用ずんだもんエージェント - コンテキストに応じて役割を動的に切り替える
     
