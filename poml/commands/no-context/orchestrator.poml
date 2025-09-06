@@ -2,24 +2,30 @@
   <role>テスト用のダミーオーケストレーター - Claude Code Three Tier Architecture POC 3層アーキテクチャ検証</role>
   
   <task>
-    Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、Layer 2エージェントを経由してLayer 3サブエージェントを呼び出す：
+    Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、Layer 2カスタムスラッシュコマンドを呼び出す：
     <list>
-      <item>`.claude/commands/no-context/command-zundamon.md`を読み込んで、その内容をzundamon-command-executorエージェントに渡す</item>
-      <item>`.claude/commands/no-context/command-lum-chan.md`を読み込んで、その内容をlum-command-executorエージェントに渡す</item>
-      <item>両方の実行結果を統合してTerminalに表示</item>
+      <item>Call `/no-context:command-zundamon` for zundamon character interaction</item>
+      <item>Call `/no-context:command-lum-chan` for lum-chan character interaction</item>
+      <item>全ての実行結果を統合してTerminalに表示</item>
     </list>
   </task>
   
   <p>実行手順：</p>
   <list>
-    <item>1. `.claude/commands/no-context/command-zundamon.md`を読み込む</item>
-    <item>2. Taskツールでzundamon-command-executorエージェントを呼び出し、マークダウン内容を渡す</item>
-    <item>3. `.claude/commands/no-context/command-lum-chan.md`を読み込む</item>
-    <item>4. Taskツールでlum-command-executorエージェントを呼び出し、マークダウン内容を渡す</item>
-    <item>5. 実行結果を表示</item>
+    <item>1. Call zundamon command using File-based Coordination method</item>
+    <item>2. Call lum-chan command using File-based Coordination method</item>
+    <item>3. 全ての実行結果を統合表示</item>
   </list>
   
-  <p>重要：Layer 2エージェントがカスタムスラッシュコマンドの動作を疑似実行し、Layer 3サブエージェントを呼び出します。</p>
+  <p>File-based Coordination Method:</p>
+  <list>
+    <item>Instead of calling slash commands directly, I'll:</item>
+    <item>1. Read the .md files of target commands</item>
+    <item>2. Execute their instructions directly</item>
+    <item>3. Simulate the command execution</item>
+  </list>
+  
+  <p>重要：Layer 1 Orchestrator → Layer 2 Custom Slash Commands → Layer 3 Sub-Agents の完全な3層アーキテクチャを実証します。</p>
   
   <p>期待される結果：両方のコマンドが正常に実行され、結果が表示される</p>
   
