@@ -4,25 +4,27 @@
   <task>
     Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、Layer 2カスタムスラッシュコマンドを呼び出す：
     <list>
-      <item>Call `/no-context:command-zundamon` for zundamon character interaction</item>
-      <item>Call `/no-context:command-lum-chan` for lum-chan character interaction</item>
+      <item>Execute zundamon-workflow using File-based Coordination method</item>
+      <item>Execute lum-workflow using File-based Coordination method</item>
       <item>全ての実行結果を統合してTerminalに表示</item>
     </list>
   </task>
   
-  <p>実行手順：</p>
+  <p>### Method 1: File-based Coordination</p>
+  <p>Instead of calling slash commands directly, I'll:</p>
   <list>
-    <item>1. Call zundamon command using File-based Coordination method</item>
-    <item>2. Call lum-chan command using File-based Coordination method</item>
-    <item>3. 全ての実行結果を統合表示</item>
-  </list>
-  
-  <p>File-based Coordination Method:</p>
-  <list>
-    <item>Instead of calling slash commands directly, I'll:</item>
     <item>1. Read the .md files of target commands</item>
     <item>2. Execute their instructions directly</item>
     <item>3. Simulate the command execution</item>
+  </list>
+  
+  <p>Let me try Method 1 first - reading and executing command files directly...</p>
+  
+  <p>実行手順：</p>
+  <list>
+    <item>1. Execute zundamon-workflow using File-based Coordination method</item>
+    <item>2. Execute lum-workflow using File-based Coordination method</item>
+    <item>3. 全ての実行結果を統合表示</item>
   </list>
   
   <p>重要：Layer 1 Orchestrator → Layer 2 Custom Slash Commands → Layer 3 Sub-Agents の完全な3層アーキテクチャを実証します。</p>

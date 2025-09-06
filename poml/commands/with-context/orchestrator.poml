@@ -21,23 +21,21 @@
   </task>
 
   <task>
-    コマンド実行タスク（重要：Taskツール、assistant-agent、zundamon-agent、lum-agentなどのサブエージェントは一切使用しないこと。直接BashツールまたはReadツールのみを使用すること）：
+    Layer 2カスタムスラッシュコマンド実行タスク（File-based Coordination使用）：
     <list>
       <item for="command in ['zundamon', 'lum', 'character', 'assistant']">
         コマンド {{command}} の実行：
         <list>
           <item>context.pomlファイルから構造化コンテキストを読み込み</item>
-          <item>Bashツールを使用して以下のコマンドを実行：`CONTEXT="{{CONTEXT}}" npx pomljs --file poml/commands/with-context/{{command}}.poml --context "CONTEXT={{CONTEXT}}"`</item>
-
+          <item>Call `agent-workflow` with parameters "{{command}}" using File-based Coordination method</item>
           <item>{{command}}からの応答を受け取る</item>
           <item>受け取った応答({{command}}_response)を即座に画面に表示する</item>
           <item>応答({{command}}_response)をcontext.pomlファイルのaccumulated_resultsにJSONL形式で保存する</item>
         </list>
 
-        重要：この時点で結果を表示し、次のエージェントまたは統合分析に進む前に出力を完了すること
+        重要：この時点で結果を表示し、次のコマンドまたは統合分析に進む前に出力を完了すること
         注意：コンテキスト仕様に従い、会話履歴による情報伝達を使用する
       </item>
-
     </list>
   </task>
   
