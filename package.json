@@ -1,5 +1,5 @@
 {
-  "dependencies": {
-    "pomljs": "^0.0.7"
+  "devDependencies": {
+    "pomljs": "^0.0.8"
   }
 }

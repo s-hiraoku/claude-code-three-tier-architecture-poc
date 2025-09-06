@@ -1,0 +1,26 @@
+<poml>
+  <meta minVersion="0.0.8" />
+  
+  <role>Layer 2 ずんだもん汎用エージェント制御</role>
+
+  <task>
+    ユーザー指示: {{user_input}}
+    コンテキスト: {{context}}
+
+    以下のステップを順番に実行してください：
+
+    <list>
+      <item>Taskツールを使用してサブエージェントタイプ "zundamon-agent" を呼び出し、プロンプト「{{user_input}}」とコンテキスト「{{context}}」を渡す</item>
+      <item>サブエージェントからの応答を受け取る</item>
+      <item>受け取った応答内容を「## ずんだもんの回答」として表示する</item>
+      <item>応答内容をそのまま出力として返す（追加のフォーマットや説明は不要）</item>
+      <item>応答内容をLayer1に返すため、標準出力に表示する</item>
+    </list>
+  </task>
+
+  <output-format>
+    サブエージェントからの実際の応答内容をそのまま返す。
+    追加の説明やJSONラッピングは行わない。
+    Layer1が受け取れるように、応答内容をそのまま標準出力に表示する。
+  </output-format>
+</poml>

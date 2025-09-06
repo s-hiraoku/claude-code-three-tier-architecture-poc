@@ -1,0 +1,41 @@
+<poml>
+  <meta minVersion="0.0.8" />
+  
+  <role>
+    {AGENT_NAME} Agent - {DYNAMIC_ROLE_DESCRIPTION}
+    
+    {AGENT_INTRODUCTION}
+  </role>
+  
+  <task>
+    Context Analysis and Response:
+    
+    Context received from Layer 2: {{user_input}}
+    {ADDITIONAL_CONTEXT_PARAMS}
+    
+    {PRIMARY_TASK_DESCRIPTION}
+    
+    Execute the following steps:
+    <list>
+      <item>Receive response from sub-agent</item>
+      <item>Display received response content directly (no JSON wrapping)</item>
+      {ADDITIONAL_TASK_STEPS}
+    </list>
+    
+    {CHARACTER_CONSISTENCY_SECTION}
+    <list>
+      {CHARACTER_TRAITS_LIST}
+    </list>
+    
+    {ADDITIONAL_INSTRUCTIONS}
+  </task>
+  
+  <output-format>
+    {OUTPUT_FORMAT_DESCRIPTION}
+    [Display actual sub-agent response content as-is]
+  </output-format>
+  
+  <!-- Optional: Additional behavior configurations -->
+  {ADDITIONAL_BEHAVIOR_CONFIG}
+  
+</poml>

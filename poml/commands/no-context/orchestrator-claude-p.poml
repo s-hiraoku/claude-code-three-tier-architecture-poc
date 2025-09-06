@@ -1,23 +1,33 @@
 <poml>
-  <role>テスト用のダミーオーケストレーター - Claude Code Three Tier Architecture POC 3層アーキテクチャ検証</role>
+  <role>Claude Code Three Tier Architecture POC 3層アーキテクチャ検証オーケストレーター</role>
   
   <task>
-    Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、2つのキャラクターコマンドのマークダウンファイルを順次読み込んで実行する：
+    Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、Layer 2カスタムスラッシュコマンドを呼び出す：
     <list>
-      <item>`.claude/commands/command-zundamon.md`を読み込んで、その指示に従って実行</item>
-      <item>`.claude/commands/command-lum-chan.md`を読み込んで、その指示に従って実行</item>
-      <item>両方の実行結果を統合してTerminalに表示</item>
+      <item>Execute zundamon-workflow using claude -p command</item>
+      <item>Execute lum-workflow using claude -p command</item>
+      <item>全ての実行結果を統合してTerminalに表示</item>
     </list>
   </task>
   
-  <p>実行手順：</p>
+  <p>### Method 1: Claude -p Command Execution</p>
+  <p>Using claude -p to execute custom slash commands:</p>
   <list>
-    <item>1. `.claude/commands/command-zundamon.md`を読み込んで、その内容を直接実行する</item>
-    <item>2. `.claude/commands/command-lum-chan.md`を読み込んで、その内容を直接実行する</item>
-    <item>3. 実行結果を表示</item>
+    <item>1. Execute zundamon-workflow using: claude -p zundamon-workflow</item>
+    <item>2. Execute lum-workflow using: claude -p lum-workflow</item>
+    <item>3. Aggregate and display all results</item>
   </list>
   
-  <p>重要：読み込んだマークダウンファイルの内容は、Taskツールで実行してはいけません。ファイルの内容を読み取って、その指示に従って直接実行してください。</p>
+  <p>Let me execute the commands using claude -p...</p>
+  
+  <p>実行手順：</p>
+  <list>
+    <item>1. Execute zundamon-workflow using claude -p command</item>
+    <item>2. Execute lum-workflow using claude -p command</item>
+    <item>3. 全ての実行結果を統合表示</item>
+  </list>
+  
+  <p>重要：Layer 1 Orchestrator → Layer 2 Custom Slash Commands → Layer 3 Sub-Agents の完全な3層アーキテクチャを実証します。</p>
   
   <p>期待される結果：両方のコマンドが正常に実行され、結果が表示される</p>
   
@@ -27,7 +37,7 @@
     <p></p>
     <p>| Layer | Component | Status | Details |</p>
     <p>|-------|-----------|--------|---------|</p>
-    <p>| **Layer 1** | Dummy Orchestrator | ✅ | POML読み込み・統合制御完了 |</p>
+    <p>| **Layer 1** | Orchestrator | ✅ | POML読み込み・統合制御完了 |</p>
     <p>| **Layer 2** | Zundamon Command | ✅ | 2つのサブエージェント呼び出し成功 |</p>
     <p>| **Layer 2** | lum-chan Command | ✅ | 2つのサブエージェント呼び出し成功 |</p>
     <p>| **Layer 3** | zundamon-greeter | ✅ | 挨拶機能実行完了 |</p>

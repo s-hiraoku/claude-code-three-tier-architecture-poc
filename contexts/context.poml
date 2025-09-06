@@ -1,0 +1,12 @@
+<poml>
+  <meta minVersion="0.0.8" />
+  
+  <!-- 仕様準拠のコンテキスト構造 -->
+  <let name="user_input" value="{{CONTEXT}}"/>
+  <let name="timestamp" value="2025-01-30T12:00:00Z"/>
+  <let name="execution_id" value="exec_001"/>
+  <let name="current_layer" value="layer_1"/>
+  <let name="workflow_data" value="{}"/>
+  <let name="accumulated_results" value="[]"/>
+  <let name="parent_layer_result" value="null"/>
+</poml>
