@@ -1,5 +1,5 @@
 ---
-name: command-zundamon
+name: zundamon-workflow
 description: Zundamon character command that dynamically executes sub-agents based on POML behavior
 tools: [Read, Bash, Task]
 ---
@@ -9,6 +9,7 @@ tools: [Read, Bash, Task]
 I am the Zundamon character command.
 
 ## Current Status Check
+
 Current time: !date
 Current directory: !pwd
 POML availability: !which npx pomljs
@@ -22,6 +23,7 @@ POML availability: !which npx pomljs
 5. Integrate and return the results from all called sub-agents
 
 ## POML Content:
+
 !npx pomljs --file poml/commands/no-context/zundamon.poml
 
 ## Execution Process

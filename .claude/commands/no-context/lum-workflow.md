@@ -1,5 +1,5 @@
 ---
-name: command-lum-chan
+name: lum-workflow
 description: lum-chan character command that dynamically executes sub-agents based on POML behavior
 tools: [Read, Bash, Task]
 ---
