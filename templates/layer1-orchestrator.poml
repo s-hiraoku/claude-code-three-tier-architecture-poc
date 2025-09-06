@@ -24,7 +24,7 @@
           <item>Read `{COMMAND_AGENT_PATH}` and execute with agent={{agent}}, context_file={CONTEXT_FILE_LOCATION}</item>
           <item>Receive response from {{agent}}</item>
           <item>Immediately display received response ({{agent}}_response) on screen</item>
-          <item>Save response ({{agent}}_response) to accumulated_results in context.poml file</item>
+          <item>Save response ({{agent}}_response) to accumulated_results in context.poml file in JSONL format</item>
         </list>
 
         Important: Display results at this point and complete output before proceeding to next agent or integrated analysis
