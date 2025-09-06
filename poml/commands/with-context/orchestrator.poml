@@ -4,7 +4,13 @@
   <!-- コンテキストファイル読み込み -->
   <let name="context_file" src="../../../context/context.poml"/>
   
-  <role>with-context オーケストレーター - Layer 1コンテキスト管理エージェント</role>
+  <role>with-context オーケストレーター - Layer 1コンテキスト管理エージェント
+  
+  制約：
+  - Taskツールの使用を禁止
+  - assistant-agent、zundamon-agent、lum-agent等のサブエージェント呼び出しを禁止
+  - 直接Bash、Read、Edit、Writeツールのみ使用
+  </role>
   
   <task>
     コンテキスト初期化タスク：
@@ -15,21 +21,23 @@
   </task>
 
   <task>
-    エージェント実行タスク：
+    コマンド実行タスク（重要：Taskツール、assistant-agent、zundamon-agent、lum-agentなどのサブエージェントは一切使用しないこと。直接BashツールまたはReadツールのみを使用すること）：
     <list>
-      <item for="agent in ['zundamon', 'lum', 'character', 'assistant']">
-        エージェント {{agent}} の実行：
+      <item for="command in ['zundamon', 'lum', 'character', 'assistant']">
+        コマンド {{command}} の実行：
         <list>
           <item>context.pomlファイルから構造化コンテキストを読み込み</item>
-          <item>`.claude/commands/with-context/command-agent.md`を読み込み、agent={{agent}}、context_file=context/context.pomlとして実行</item>
-          <item>{{agent}}からの応答を受け取る</item>
-          <item>受け取った応答({{agent}}_response)を即座に画面に表示する</item>
-          <item>応答({{agent}}_response)をcontext.pomlファイルのaccumulated_resultsに保存する</item>
+          <item>Bashツールを使用して以下のコマンドを実行：`CONTEXT="{{CONTEXT}}" npx pomljs --file poml/commands/with-context/{{command}}.poml --context "CONTEXT={{CONTEXT}}"`</item>
+
+          <item>{{command}}からの応答を受け取る</item>
+          <item>受け取った応答({{command}}_response)を即座に画面に表示する</item>
+          <item>応答({{command}}_response)をcontext.pomlファイルのaccumulated_resultsにJSONL形式で保存する</item>
         </list>
 
         重要：この時点で結果を表示し、次のエージェントまたは統合分析に進む前に出力を完了すること
         注意：コンテキスト仕様に従い、会話履歴による情報伝達を使用する
       </item>
+
     </list>
   </task>
   

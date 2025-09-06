@@ -2,22 +2,24 @@
   <role>テスト用のダミーオーケストレーター - Claude Code Three Tier Architecture POC 3層アーキテクチャ検証</role>
   
   <task>
-    Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、2つのキャラクターコマンドのマークダウンファイルを順次読み込んで実行する：
+    Claude Code Three Tier Architecture POCの3層アーキテクチャを検証するため、Layer 2エージェントを経由してLayer 3サブエージェントを呼び出す：
     <list>
-      <item>`.claude/commands/no-content/command-zundamon.md`を読み込んで、その指示に従って実行</item>
-      <item>`.claude/commands/no-content/command-lum-chan.md`を読み込んで、その指示に従って実行</item>
+      <item>`.claude/commands/no-context/command-zundamon.md`を読み込んで、その内容をzundamon-command-executorエージェントに渡す</item>
+      <item>`.claude/commands/no-context/command-lum-chan.md`を読み込んで、その内容をlum-command-executorエージェントに渡す</item>
       <item>両方の実行結果を統合してTerminalに表示</item>
     </list>
   </task>
   
   <p>実行手順：</p>
   <list>
-    <item>1. `.claude/commands/no-content/command-zundamon.md`を読み込んで、その内容を直接実行する</item>
-    <item>2. `.claude/commands/no-content/command-lum-chan.md`を読み込んで、その内容を直接実行する</item>
-    <item>3. 実行結果を表示</item>
+    <item>1. `.claude/commands/no-context/command-zundamon.md`を読み込む</item>
+    <item>2. Taskツールでzundamon-command-executorエージェントを呼び出し、マークダウン内容を渡す</item>
+    <item>3. `.claude/commands/no-context/command-lum-chan.md`を読み込む</item>
+    <item>4. Taskツールでlum-command-executorエージェントを呼び出し、マークダウン内容を渡す</item>
+    <item>5. 実行結果を表示</item>
   </list>
   
-  <p>重要：読み込んだマークダウンファイルの内容は、Taskツールで実行してはいけません。ファイルの内容を読み取って、その指示に従って直接実行してください。</p>
+  <p>重要：Layer 2エージェントがカスタムスラッシュコマンドの動作を疑似実行し、Layer 3サブエージェントを呼び出します。</p>
   
   <p>期待される結果：両方のコマンドが正常に実行され、結果が表示される</p>
   

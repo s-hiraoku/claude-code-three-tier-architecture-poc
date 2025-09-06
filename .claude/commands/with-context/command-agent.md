@@ -1,33 +1,74 @@
 ---
-description: Layer 2 generic agent command that loads and executes POML files based on agent name
-argument-hint: [agent-name]
-allowed-tools: [Read, Bash]
+description: Layer 2 generic agent command with parameter parsing support
+argument-hint: [agent-name or key=value parameters]
+allowed-tools: [Read, Bash, Edit]
 ---
 
-# Generic Agent Command - Layer 2
+# Enhanced Generic Agent Command - Layer 2
 
-Generic agent command for custom slash commands.
-Loads and executes corresponding POML files based on the agent name specified in arguments.
+Generic agent command that supports both simple and key-value parameter formats from orchestrator.poml.
 
 ## Usage
 
-```
-/with-context:command-agent [agent-name]
-```
+```bash
+# Simple format
+/with-context:command-agent zundamon
 
-- `$ARGUMENTS`: Agent name to execute
+# Key-value format (from orchestrator.poml)
+/with-context:command-agent agent=zundamon,context_file=context/context.poml
+```
 
 ## Task
 
-Execute the following processes sequentially:
+Execute the following processes with enhanced parameter parsing:
 
-1. **Get Arguments**: Extract agent name from `$ARGUMENTS`
-2. **Load Context**: Read the context file at `context/context.poml`
-3. **Execute POML**: Read the POML behavior file at `poml/commands/with-context/$ARGUMENTS.poml` using `npx pomljs --file poml/commands/with-context/$ARGUMENTS.poml --context "user_input=$(grep 'user_input' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" --context "accumulated_results=$(grep 'accumulated_results' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/')" --context "context=$(accumulated_results=$(grep 'accumulated_results' context/context.poml | sed 's/.*value="\([^"]*\)".*/\1/'); if [ \"\$accumulated_results\" = '[]' ]; then grep 'user_input' context/context.poml | sed 's/.*value=\"\\([^\"]*\\)\".*/\\1/'; else echo \"\$accumulated_results\"; fi)"`
-4. **Follow Instructions**: Parse and understand the instructions in the POML output
-5. **Output Results**: Display the execution results
+1. **Parse Arguments**: Handle multiple parameter formats
 
-## Implementation
+   ```bash
+   # Parse arguments to extract command name and context file
+   if [[ "$ARGUMENTS" == *"="* ]]; then
+     # Key-value format: command=zundamon,context_file=...
+     eval $(echo "$ARGUMENTS" | tr ',' '\n')
+     AGENT_NAME="$command"
+     CONTEXT_FILE="${context_file:-context/context.poml}"
+   else
+     # Simple format: zundamon
+     AGENT_NAME="$ARGUMENTS"
+     CONTEXT_FILE="context/context.poml"
+   fi
+   ```
 
-This command is a thin wrapper that loads and executes specified POML files.
-Actual processing logic is defined in each behavior.poml file.
+2. **Load Context**: Read context from specified file
+
+   ```bash
+   USER_INPUT=$(grep 'user_input' "$CONTEXT_FILE" | sed 's/.*value="\([^"]*\)".*/\1/')
+   ACCUMULATED_RESULTS=$(grep 'accumulated_results' "$CONTEXT_FILE" | sed 's/.*value=.\([^}]*\)}.*/\1/')
+   ```
+
+3. **Execute POML**: Run agent with proper context
+
+   ```bash
+   AGENT_RESPONSE=$(npx pomljs --file "poml/commands/with-context/$AGENT_NAME.poml" \
+     --context "user_input=$USER_INPUT" \
+     --context "accumulated_results=$ACCUMULATED_RESULTS")
+   ```
+
+4. **Update Context**: Save response to accumulated_results
+
+   ```bash
+   # Update the context file with new response
+   sed -i '' "s/\"${AGENT_NAME}_response\": \"[^\"]*\"/\"${AGENT_NAME}_response\": \"$AGENT_RESPONSE\"/" "$CONTEXT_FILE"
+   ```
+
+5. **Display Results**: Show agent response
+
+## Implementation Details
+
+This command now supports:
+
+- Parameter parsing for orchestrator.poml compatibility
+- Flexible context file specification
+- Proper JSON escaping for accumulated_results updates
+- Error handling for missing files or invalid parameters
+
+The agent response is captured and saved to the appropriate field in accumulated_results.
