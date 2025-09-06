@@ -2,7 +2,7 @@
   <meta minVersion="0.0.8" />
   
   <!-- コンテキストファイル読み込み -->
-  <let name="context_file" src="../../../context/context.poml"/>
+  <let name="context_file" src="../../../contexts/context.poml"/>
   
   <role>with-context オーケストレーター - Layer 1コンテキスト管理エージェント
   
